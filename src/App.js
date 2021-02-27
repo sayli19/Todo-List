@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
+import "./App.css";
+import AddTask from "./Components/AddTask";
+import TodoList from "./Components/TodoList";
+import todoicon from "./Components/todoicon.png";
 function App() {
+  const [todolist, setTodoList] = useState([
+    { id: 1, task: "Buy 1L milk" },
+    { id: 2, task: "Do laundry" },
+    { id: 3, task: "Search apartment" },
+  ]);
+
+  const addNewTask = (newTask) => {
+    const newId = Math.random() * 10;
+    setTodoList([
+      ...todolist,
+      {
+        id: newId,
+        task: newTask,
+      },
+    ]);
+  };
+
+  const deleteTask = (id) => {
+    const newTodoList = todolist.filter((task) => {
+      return task.id !== id;
+    });
+    setTodoList(newTodoList);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="mainApp">
+      <div className="App">
+        <img className="todoicon" src={todoicon} alt="todoicon"></img>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <b>Sayli's To-do List</b>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <br></br>
+        <AddTask addNewTask={addNewTask} />
+        <TodoList todolist={todolist} deleteTask={deleteTask} />
+      </div>
     </div>
   );
 }
